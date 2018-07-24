@@ -14,8 +14,8 @@ using VkNet.Model;
 using VkNet.Model.Attachments;
 using VkNet.Model.RequestParams;
 using VkNet.Utils;
-using WaterStrike.LongPoll;
-using WaterStrike.LongPoll.EventArgs;
+using GiphyVk.LongPoll;
+using GiphyVk.LongPoll.EventArgs;
 
 namespace GiphyVk
 {

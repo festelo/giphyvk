@@ -3,9 +3,9 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using WaterStrike.LongPoll.EventArgs;
+using GiphyVk.LongPoll.EventArgs;
 
-namespace WaterStrike.LongPoll
+namespace GiphyVk.LongPoll
 {
     public class VkLongPollClient : IDisposable
     {

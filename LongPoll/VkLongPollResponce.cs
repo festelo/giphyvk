@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace WaterStrike.LongPoll
+namespace GiphyVk.LongPoll
 {
     public class VkLongPollResponce
     {

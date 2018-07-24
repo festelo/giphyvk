@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WaterStrike.LongPoll
+namespace GiphyVk.LongPoll
 {
     public class VkLongPollException : Exception
     {

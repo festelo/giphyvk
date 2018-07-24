@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace WaterStrike.LongPoll.EventArgs
+namespace GiphyVk.LongPoll.EventArgs
 {
     public class VkLongPollUpdateEventArgs : VkLongPollEventArgs
     {
