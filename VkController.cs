@@ -71,7 +71,6 @@ namespace GiphyVk
                 var query = rndMatch.Groups[1].Value;
                 getUrl = gapi.Random(query);
             }
-
             else if(randomRegex.Match(message.Body) is var searchMatch && searchMatch.Success) {
                 var query = searchMatch.Groups[1].Value;
                 var offset = searchMatch.Groups.Count > 1 
@@ -79,13 +78,12 @@ namespace GiphyVk
                     : 0;
                 getUrl = gapi.Search(query, offset, DefaultLanguage);
             }
-
             else return;
 
             try
             {
                 var data = await api.Docs.GetMessagesUploadServerAsync(id, DocMessageType.Doc);
-                var url = await getUrl();
+                var url = await getUrl;
                 var bytes = await Download(url);
                 var response = await UploadFile(data.UploadUrl, bytes);
                 var docs = api.Docs.Save(response, "gif");
