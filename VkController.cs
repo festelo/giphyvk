@@ -73,9 +73,9 @@ namespace GiphyVk
             }  
             else
             
-            if(randomRegex.Match(message.Body) is var searchMatch && searchMatch.Success) {
+            if(searchRegex.Match(message.Body) is var searchMatch && searchMatch.Success) {
                 var query = searchMatch.Groups[1].Value;
-                var offset = searchMatch.Groups.Count > 1 
+                var offset = !string.IsNullOrWhiteSpace(searchMatch.Groups[2].Value) 
                     ? int.Parse(searchMatch.Groups[2].Value) 
                     : 0;
                 getUrl = gapi.Search(query, offset, DefaultLanguage);
@@ -95,8 +95,9 @@ namespace GiphyVk
                     UserId = id
                 });
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 api.Messages.Send(new MessagesSendParams
                 {
                     Message = "Увы",
