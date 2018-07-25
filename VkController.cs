@@ -84,7 +84,6 @@ namespace GiphyVk
                     UserId = id
                 });
             }
-            api.Messages.Send(new MessagesSendParams() { Message = "Не понимаю о чем вы", UserId = id });
         }
 
         private async Task<byte[]> Download(string url)
