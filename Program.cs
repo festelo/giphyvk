@@ -12,7 +12,14 @@ namespace GiphyVk
             var group = ulong.Parse(Environment.GetEnvironmentVariable("group"));
             var key = Environment.GetEnvironmentVariable("key");
             var gkey = Environment.GetEnvironmentVariable("giphyKey");
-            var controller = new VkController(group, key, gkey);
+            var region = Environment.GetEnvironmentVariable("region");
+            var controller = new VkController(
+                group, 
+                key, 
+                new GiphyApi(gkey) {
+                    Region = region
+                }
+            );
             controller.StartLongPoll().Wait();
             while (true)
             {

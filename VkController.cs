@@ -25,13 +25,13 @@ namespace GiphyVk
         private readonly GiphyApi gapi;
         private readonly ulong groupid;
         private readonly VkLongPollClient longPollClient = new VkLongPollClient(); 
-        public VkController(ulong groupid, string apptoken, string giphytoken)
+        public VkController(ulong groupid, string apptoken, GiphyApi gapi)
         {
             this.groupid = groupid;
+            this.gapi = gapi;
             api.Authorize(new ApiAuthParams() {AccessToken = apptoken});
             longPollClient.Message += MessageReceived;
             longPollClient.Error += ErrorReceived;
-            gapi = new GiphyApi(giphytoken);
         }
 
         private async void ErrorReceived(object sender, VkLongPollErrorEventArgs e)
@@ -112,6 +112,7 @@ namespace GiphyVk
         {
             longPollClient?.Dispose();
             api?.Dispose();
+            gapi?.Dispose();
         }
     }
 }
