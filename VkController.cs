@@ -22,13 +22,14 @@ namespace GiphyVk
     class VkController : IDisposable
     {
         private readonly VkApi api = new VkApi();
+        private readonly ulong groupid;        
         private readonly GiphyApi gapi;
-        private readonly ulong groupid;
         private readonly VkLongPollClient longPollClient = new VkLongPollClient(); 
-        public VkController(ulong groupid, string apptoken, GiphyApi gapi)
+        public string DefaultLanguage { get; set; }= "en";
+        public VkController(ulong groupid, string apptoken, string gtoken)
         {
             this.groupid = groupid;
-            this.gapi = gapi;
+            this.gapi = new GiphyApi(gtoken);
             api.Authorize(new ApiAuthParams() {AccessToken = apptoken});
             longPollClient.Message += MessageReceived;
             longPollClient.Error += ErrorReceived;
@@ -62,11 +63,29 @@ namespace GiphyVk
 
             if(string.IsNullOrWhiteSpace(message.Body)) return;
             
+            var searchRegex = new Regex("([^#]+)(\\d)?");
+            var randomRegex = new Regex("([^#]+)(?:rnd|random|r)");
+            Task<string> getUrl = null;
+            
+            if(randomRegex.Match(message.Body) is var rndMatch && rndMatch.Success) {
+                var query = rndMatch.Groups[1].Value;
+                getUrl = gapi.Random(query);
+            }
+
+            else if(randomRegex.Match(message.Body) is var searchMatch && searchMatch.Success) {
+                var query = searchMatch.Groups[1].Value;
+                var offset = searchMatch.Groups.Count > 1 
+                    ? int.Parse(searchMatch.Groups[2].Value) 
+                    : 0;
+                getUrl = gapi.Search(query, offset, DefaultLanguage);
+            }
+
+            else return;
 
             try
             {
                 var data = await api.Docs.GetMessagesUploadServerAsync(id, DocMessageType.Doc);
-                var url = await gapi.Search(message.Body);
+                var url = await getUrl();
                 var bytes = await Download(url);
                 var response = await UploadFile(data.UploadUrl, bytes);
                 var docs = api.Docs.Save(response, "gif");
