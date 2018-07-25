@@ -15,7 +15,7 @@ class GiphyApi : IDisposable {
         this.token = token;
     }
     public async Task<string> Search(string query){
-        var url = string.Format("https://api.giphy.com/v1/gifs/search?api_key={0}&q={1}&limit=1&offset=0&rating=G&lang={1}", 
+        var url = string.Format("https://api.giphy.com/v1/gifs/search?api_key={0}&q={1}&limit=1&offset=0&rating=G&lang={2}", 
             token, 
             HttpUtility.UrlEncode(query),
             Region);
