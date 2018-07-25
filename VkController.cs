@@ -63,15 +63,17 @@ namespace GiphyVk
 
             if(string.IsNullOrWhiteSpace(message.Body)) return;
             
-            var searchRegex = new Regex("([^#]+)(\\d)?");
-            var randomRegex = new Regex("([^#]+)(?:rnd|random|r)");
+            var searchRegex = new Regex("([^#]+)#?(\\d+)?");
+            var randomRegex = new Regex("([^#]+)#(?:rnd|random|r)");
             Task<string> getUrl = null;
-            
+              
             if(randomRegex.Match(message.Body) is var rndMatch && rndMatch.Success) {
                 var query = rndMatch.Groups[1].Value;
                 getUrl = gapi.Random(query);
-            }
-            else if(randomRegex.Match(message.Body) is var searchMatch && searchMatch.Success) {
+            }  
+            else
+            
+            if(randomRegex.Match(message.Body) is var searchMatch && searchMatch.Success) {
                 var query = searchMatch.Groups[1].Value;
                 var offset = searchMatch.Groups.Count > 1 
                     ? int.Parse(searchMatch.Groups[2].Value) 
